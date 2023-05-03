@@ -187,13 +187,13 @@
     function asc(suit) {
         let suitCards = document.querySelectorAll('.' + suit + '-card');
         suitCards.forEach((e, i) => {
-            e.src = './src/resources/images/' + suit.toLowerCase(); + '/' + RANKS[i] + '.svg';
+            e.src = './src/resources/images/' + suit.toLowerCase() + '/' + RANKS[i] + '.svg';
         });
     }
     function desc(suit) {
         let suitCards = document.querySelectorAll('.' + suit + '-card');
         suitCards.forEach((e, i) => {
-            e.src = './src/resources/images/' + suit.toLowerCase(); + '/' + RANKS[12 - i] + '.svg';
+            e.src = './src/resources/images/' + suit.toLowerCase() + '/' + RANKS[12 - i] + '.svg';
         });
     }
 
