@@ -178,7 +178,7 @@
 
             for (let i = 0; i < suits[suit].length; i++) {
                 let card = suitTemplate.content.cloneNode(true).children[0];
-                card.src = './src/resources/images/' + suit + '/' + suits[suit][i] + '.svg';
+                card.src = './src/resources/images/' + suit.toLowerCase() + '/' + suits[suit][i] + '.svg';
                 suitContainer.append(card);
             }
         }
@@ -187,13 +187,13 @@
     function asc(suit) {
         let suitCards = document.querySelectorAll('.' + suit + '-card');
         suitCards.forEach((e, i) => {
-            e.src = './src/resources/images/' + suit + '/' + RANKS[i] + '.svg';
+            e.src = './src/resources/images/' + suit.toLowerCase(); + '/' + RANKS[i] + '.svg';
         });
     }
     function desc(suit) {
         let suitCards = document.querySelectorAll('.' + suit + '-card');
         suitCards.forEach((e, i) => {
-            e.src = './src/resources/images/' + suit + '/' + RANKS[12 - i] + '.svg';
+            e.src = './src/resources/images/' + suit.toLowerCase(); + '/' + RANKS[12 - i] + '.svg';
         });
     }
 
