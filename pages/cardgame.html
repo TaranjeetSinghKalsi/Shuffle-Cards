@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='UTF-8'>
+    <title>Sorting Cards</title>
+    <style>
+        .card {
+            width: 8rem;
+            padding: 1em 0;
+        }
+
+        .logo {
+            height: 8rem;
+        }
+
+        .card-container {
+            display: flex;
+            /* justify-content: flex-end; */
+            flex-direction: column;
+            width: 8rem;
+        }
+
+        .flex-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            flex-direction: row;
+            padding: 1em 0;
+        }
+
+        .btn {
+            width: 3rem;
+        }
+        #shuffle-btn{
+            padding: 0.5em 1em;
+        }
+        
+        
+    </style>
+</head>
+
+<body onload='getData()'>
+    <div class='flex-container'>
+    <button id='shuffle-btn' onclick='shuffleSuits()'>Shuffle Suits</button>
+    </div>
+
+    <div class='flex-container' id='suits-container'>
+
+        <div class='card-container'>
+            <div>
+                <img src='../src/resources/images/CLUB.png' class='card logo' alt=''>
+                <div class='flex-container'>
+                    <button onclick='asc(`club`)'> <img src='../src/resources/images/asc.svg' alt='' class='btn'>
+                    </button>
+                    <button onclick='desc(`club`)'> <img src='../src/resources/images/des.svg' alt='' class='btn'>
+                    </button>
+                </div>
+            </div>
+            <div class='card-container' CLUB-container>
+
+                <template CLUB-template>
+                    <img src='../src/resources/images/CLUB.png' class='card club-card' alt=''>
+                </template>
+            </div>
+        </div>
+
+        <div class='card-container'>
+            <div>
+                <img src='../src/resources/images/DIAMOND.png' class='card logo' alt=''>
+                <div class='flex-container'>
+                    <button onclick='asc(`diamond`)'> <img src='../src/resources/images/asc.svg' alt='' class='btn'>
+                    </button> <button onclick='desc(`diamond`)'> <img src='../src/resources/images/des.svg' alt=''
+                            class='btn'>
+                    </button>
+                </div>
+            </div>
+            <div class='card-container' DIAMOND-container>
+
+
+                <template DIAMOND-template>
+                    <img src='../src/resources/images/DIAMOND.png' class='card diamond-card' alt=''>
+                </template>
+            </div>
+        </div>
+
+        <div class='card-container'>
+            <div>
+                <img src='../src/resources/images/HEART.png' class='card logo' alt=''>
+                <div class='flex-container'>
+                    <button onclick='asc(`heart`)'> <img src='../src/resources/images/asc.svg' alt='' class='btn'>
+                    </button>
+                    <button onclick='desc(`heart`)'> <img src='../src/resources/images/des.svg' alt='' class='btn'>
+                    </button>
+                </div>
+            </div>
+            <div class='card-container' HEART-container>
+
+                <template HEART-template>
+                    <img src='../src/resources/images/HEART.png' class='card heart-card' alt=''>
+                </template>
+            </div>
+        </div>
+
+        <div class='card-container'>
+            <div>
+                <img src='../src/resources/images/SPADE.png' class='card logo' alt=''>
+                <div class='flex-container'>
+                    <button onclick='asc(`spade`)'> <img src='../src/resources/images/asc.svg' alt='' class='btn'>
+                    </button>
+                    <button onclick='desc(`spade`)'> <img src='../src/resources/images/des.svg' alt='' class='btn'>
+                    </button>
+                </div>
+            </div>
+            <div class='card-container' SPADE-container>
+
+                <template SPADE-template>
+                    <img src='../src/resources/images/SPADE.png' class='card spade-card' alt=''>
+                </template>
+            </div>
+
+        </div>
+
+    </div>
+
+
+</body>
+<script>
+    const RANKS = [
+        'TWO',
+        'THREE',
+        'FOUR',
+        'FIVE',
+        'SIX',
+        'SEVEN',
+        'EIGHT',
+        'NINE',
+        'TEN',
+        'JACK',
+        'QUEEN',
+        'KING',
+        'ACE'
+    ];
+    let suits = {
+        'SPADE': [],
+        'HEART': [],
+        'DIAMOND': [],
+        'CLUB': []
+    };
+
+    function getData() {
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                let cards = JSON.parse(this.responseText);
+
+                for (let i = 0; i < cards.length; i++) {
+                    let card = cards[i];
+                    suits[card.suit].push(card.rank);
+                }
+
+            }
+        };
+        xhttp.open('GET', './pack-of-cards.json', true);
+        xhttp.send();
+        setTimeout(() => {
+            setCards();
+        }, 100);
+
+    }
+
+    function setCards() {
+        let suitTemplate, suitContainer;
+        for (let suit in suits) {
+
+            suitTemplate = document.querySelector('[' + suit + '-template]');
+            suitContainer = document.querySelector('[' + suit + '-container]');
+
+            for (let i = 0; i < suits[suit].length; i++) {
+                let card = suitTemplate.content.cloneNode(true).children[0];
+                card.src = '../src/resources/images/' + suit + '/' + suits[suit][i] + '.svg';
+                suitContainer.append(card);
+            }
+        }
+    }
+
+    function asc(suit) {
+        let suitCards = document.querySelectorAll('.' + suit + '-card');
+        suitCards.forEach((e, i) => {
+            e.src = '../src/resources/images/' + suit + '/' + RANKS[i] + '.svg';
+        });
+    }
+    function desc(suit) {
+        let suitCards = document.querySelectorAll('.' + suit + '-card');
+        suitCards.forEach((e, i) => {
+            e.src = '../src/resources/images/' + suit + '/' + RANKS[12 - i] + '.svg';
+        });
+    }
+
+    function shuffleSuits() {
+        let suitsContainer = document.getElementById('suits-container');
+        let suits = Array.from(suitsContainer.children);
+        for (let i = suits.length - 1; i > 0; i--) {
+            let j = Math.floor(Math.random() * (i + 1));
+            suitsContainer.appendChild(suits[j]);
+        }
+    }
+
+</script>
+
+</html>
